@@ -18,9 +18,11 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       category_code: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
 
       createdAt: {
