@@ -10,7 +10,7 @@ export const badRequest = (err, res) => {
     })
 }
 
-export const internalServerError = (req, res) => {
+export const internalServerError = (res) => {
     const error = createHttpError.InternalServerError()
     res.status(error.status).json({
         err: 1,
