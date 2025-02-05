@@ -50,7 +50,9 @@ export const createNewBook = async (body, fileData) => {
         title: body.title,
       },
       defaults: body,
-      iamge: fileData?.path
+      image: fileData?.path,
+      filename: fileData?.filename
+
     });
 
     if(!response[1]){
@@ -66,3 +68,60 @@ export const createNewBook = async (body, fileData) => {
     console.log(error);
   }
 };
+
+
+// UPDATE
+export const updateBook  = async ({id, ...body}, fileData) => {
+  try {
+    if(fileData){
+      body.image = fileData?.path
+    }
+    const response = await db.Book.update({body}, {
+      where : {id}
+    })
+
+    return {
+      err: response[0] > 0? 0: 1,
+      mes: response[0] > 0? 'Updated' :  'Cannot update the book' 
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+/*
+  params = {
+    bids = [id1, id2],
+    filename = [filename1, filename2]
+  }
+
+
+*/
+
+// DELETE
+export const deleteBook = async ({bids, filename}) => {
+
+  const transaction = await db.sequelize.transaction();
+  try {
+    const response = await db.Book.destroy({
+      where: {id: bids},
+      transaction
+    })
+    //cloudinary.uploader.destroy("123");
+
+    
+    cloudinary.api.delete_resources(filename)
+    
+
+    await transaction.commit();
+
+    return {
+      err: response[0] > 0 ? 0 : 1,
+      mes: response[0] > 0 ?  `${response} book(s) was deleted` : "Can not detele book"
+    }
+  } catch (error) {
+    await transaction.rollback();
+    console.log(error)
+  }
+}
