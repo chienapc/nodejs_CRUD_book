@@ -14,8 +14,12 @@ export const title = joi.string().required();
 
 export const price = joi.number().required();
 
-export const category_code = joi.string().alphanum().required()
+export const category_code = joi.string().alphanum().required();
 
-export const image = joi.string().required()
+export const image = joi.string().required();
 
+export const bid = joi.string().required();
 
+export const bids = joi.array().required();
+
+export const filename = joi.array().required();
