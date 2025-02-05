@@ -26,10 +26,10 @@ export const notFound = (req, res) => {
     })
 }
 
-export const notAuth = (err, res) => {
+export const notAuth = (err, res, isExpired) => {
     const error = createHttpError.Unauthorized(err)
     return res.status(error.status).json({
-        err: 1,
+        err: isExpired? 2 : 1,
         mes: error.message
     })
 }
