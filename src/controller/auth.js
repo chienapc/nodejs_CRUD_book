@@ -1,5 +1,5 @@
 import * as service from "../service";
-import { email, password } from "../helper/joi_schema";
+import { email, password, refreshToken } from "../helper/joi_schema";
 import joi from "joi";
 import {
   internalServerError,
@@ -41,3 +41,16 @@ export const login = async (req, res) => {
     internalServerError(res);
   }
 };
+
+
+export const refreshTokenController = async (req, res) => {
+  try {
+    const {error} = joi.object({refreshToken}).validate(req.body)
+    if(error) return badRequest(error.details[0]?.message, res)
+    const response = await service.refreshToken(req.body)
+    return res.status(200).json(response)
+
+  } catch (error) {
+    
+  }
+}
